@@ -1,0 +1,1 @@
+C:/Users/Remote/AppData/Local/Programs/Python/Python313/python.exe c:/Users/Remote/Desktop/recovered/2024/testtt/pathapp.py
